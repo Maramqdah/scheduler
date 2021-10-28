@@ -2,6 +2,7 @@ import React from "react";
 import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 import "index.scss";
+import { Fragment } from "react";
 
 import Button from "components/Button";
 import DayListItem from "components/DayListItem";
@@ -165,20 +166,36 @@ storiesOf("Appointment", module)
   .add('Form Creating', () => (
     <Form
       interviewers={interviewers}
-      onSave={action('onSave')}
-      onCancel={action('onCancel')}
+      onSave={action("onSave")}
+      onCancel={action("onCancel")}
     />
   ))
-  .add('Form Editing', () => (
+  .add("Form Editing", () => (
     <Form
-      name='Maram Qdah'
+      name="Maram Qdah"
       interviewers={interviewers}
       interviewer={4}
-      onSave={action('onSave')}
-      onCancel={action('onCancel')}
+      onSave={action("onSave")}
+      onCancel={action("onCancel")}
      
     />
-  ));
+  ))
+  .add("Appointment Empty", () => (
+    <Fragment>
+      <Appointment id={1} time="4pm" />
+      <Appointment time="5pm" />
+    </Fragment>
+  ))
+  .add("Appointment Booked", () => (
+    <Fragment>
+      <Appointment
+        id={1}
+        time="4pm"
+        interview={{ student: "Lydia Miller-Jones", interviewer }}
+      />
+      <Appointment time="5pm" />
+    </Fragment>
+  ))
  
 
   
