@@ -4,24 +4,9 @@ import "components/DayList";
 import DayList from "components/DayList";
 import { useState } from "react";
 import Appointment from "./Appointment";
+import axios from "axios";
+import { useEffect } from "react";
 
-const days = [
-  {
-    id: 1,
-    name: "Monday",
-    spots: 2,
-  },
-  {
-    id: 2,
-    name: "Tuesday",
-    spots: 5,
-  },
-  {
-    id: 3,
-    name: "Wednesday",
-    spots: 0,
-  },
-];
 const appointments = [
   {
     id: 1,
@@ -36,8 +21,8 @@ const appointments = [
         id: 3,
         name: "Sylvia Palmer",
         avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
+      },
+    },
   },
   {
     id: 3,
@@ -52,19 +37,34 @@ const appointments = [
         id: 4,
         name: "Cohana Roy",
         avatar: "https://i.imgur.com/FK8V841.jpg",
-      }
-    }
+      },
+    },
   },
   {
     id: 5,
     time: "4pm",
-  }
+  },
 ];
 
-
 export default function Application(props) {
-  const [day, setDay] = useState("Monday");
-  console.log("Day", day);
+  const [days, setDays] = useState([]);
+  // useEffect(() => {
+  //   axios.get("/api/days").then((response) => {
+  //     setDays( 
+  //       ...prevState,
+  //       {"id": response.data.id , "name":response.data.name , "appointments":response.data.appointments, "interviewer":response.data.interviewer, "spots":response.data.spots}
+  //      );
+    
+  // )}, []);
+  useEffect(() => {
+    axios.get(`/api/days`)
+      .then(res => setDays(res.data))
+  },[]);
+
+  
+
+  console.log("days", days);
+
   return (
     <main className="layout">
       <section className="sidebar">
@@ -75,11 +75,8 @@ export default function Application(props) {
         />
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
-          <DayList
-            days={days}
-            value={day}
-            onChange={setDay}
-          /> </nav>
+          <DayList days={days} onChange={setDays} />{" "}
+        </nav>
         <img
           className="sidebar__lhl sidebar--centered"
           src="images/lhl.png"
@@ -87,7 +84,9 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-        {appointments.map((appointment)=> <Appointment keyx={appointment.id} {...appointment}  />)}
+        {appointments.map((appointment) => (
+          <Appointment keyx={appointment.id} {...appointment} />
+        ))}
       </section>
     </main>
   );
