@@ -5,20 +5,32 @@ import Header from "./Header";
 import Empty from "./Empty";
 import Show from "./Show";
 import useVisualMode from "hooks/useVisualMode";
+import Form from "./Form";
 
 
 export default function Appointment(props) {
-  // const EMPTY = "EMPTY";
-  // const SHOW = "SHOW";
-  // const { mode, transition, back } = useVisualMode(
-  //   props.interview ? SHOW : EMPTY
-  // )
- 
+  const EMPTY = "EMPTY";
+  const SHOW = "SHOW";
+  const CREATE = "CREATE"
+  const interviewers = [];
+
+  const { mode, transition, back } = useVisualMode(
+    props.interview ? SHOW : EMPTY
+  );
+
+
   return (
     <Fragment>
       <Header time={props.time}>
       </Header>
-      {props.interview ? <Show  student={props.interview.student} interviewer={props.interview.interviewer.name} /> : <Empty />}
+      {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
+      {mode === CREATE && <Form interviewers={interviewers } onCancel= {()=> back() } />}
+      {mode === SHOW && (
+        <Show
+          student={props.interview.student}
+          interviewer={props.interview.interviewer}
+        />
+      )}
     </Fragment>
 
   )
