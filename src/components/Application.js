@@ -2,22 +2,22 @@ import React from "react";
 import "components/Application.scss";
 import "components/DayList";
 import DayList from "components/DayList";
-import { useState } from "react";
 import Appointment from "./Appointment";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
+import useApplicationData from "hooks/useApplicationData";
 
 
 
 export default function Application(props) {
-  
-  const [state, setState] = useState({
-    day: "Monday",
-    days: [],
-    appointments: {},
-    interviewers: {}
-  });
+  const {
+    state,
+    setState,
+    setDay,
+    bookInterview,
+    cancelInterview
+  } = useApplicationData();
 
   useEffect(() => {
     axios.all([
@@ -36,48 +36,12 @@ export default function Application(props) {
       .catch((err) => console.log(err));
   }, []);
 
-  function bookInterview(id, interview) {
-    console.log("bookinterview",id, interview);
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
-    return(
-      axios.put(`http://localhost:8001/api/appointments/${id}`,{interview})
-      .then((res)=>{
-        setState({
-          ...state,
-          appointments
-        });
-      }))
-  }
-
-  function cancelInterview(id){
-    const appointment = {
-      ...state.appointments[id],
-      interview: null
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
-    return axios.delete(`http://localhost:8001/api/appointments/${id}`)
-    .then(res => {
-      setState({
-        ...state,
-        appointments
-      })
-      
-    })
-  }
+  
+  
 
 
   const dailyAppointment = getAppointmentsForDay(state, state.day)
-  const setDay = day => setState({ ...state, day });
+ 
   const schedule = dailyAppointment.map((appointment) => {
   const interview = getInterview(state, appointment.interview);
     return (
