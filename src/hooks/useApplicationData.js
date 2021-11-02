@@ -9,6 +9,19 @@ const useApplicationData=()=>{
     appointments: {},
     interviewers: {}
   });
+
+function updateSpots(newAppointments) {
+
+  return state.days.map((eachDay)=>{
+    let freeSpots=0;
+    for (const key of eachDay.appointments){
+      if(!newAppointments[key].interview) freeSpots++;
+    }
+    return {...eachDay, spots:freeSpots}
+  })
+  
+}
+
   function bookInterview(id, interview) {
     console.log("bookinterview",id, interview);
     const appointment = {
@@ -24,10 +37,13 @@ const useApplicationData=()=>{
       .then((res)=>{
         setState({
           ...state,
-          appointments
+          appointments,
+          days:updateSpots(appointments)
         });
       }))
   }
+
+
   function cancelInterview(id){
     const appointment = {
       ...state.appointments[id],
@@ -41,7 +57,8 @@ const useApplicationData=()=>{
     .then(res => {
       setState({
         ...state,
-        appointments
+        appointments,
+        days:updateSpots(appointments)
       })
       
     })
