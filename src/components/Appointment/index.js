@@ -71,7 +71,7 @@ export default function Appointment(props) {
 
   return (
     //used article instead of fragment to apply styles
-    <article className="appointment">
+    <article className="appointment" >
       <Header time={props.time}>
       </Header>
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
