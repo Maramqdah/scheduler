@@ -7,7 +7,7 @@ export default function DayList(props) {
   return (
     <ul>{props.days.map((day) =>
       <DayListItem
-        selected={props.value === day.name}
+      selected={day.name === props.day}
         name={day.name}
         spots={day.spots}
         setDay={props.onChange}
