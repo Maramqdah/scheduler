@@ -33,7 +33,7 @@ function updateSpots(newAppointments) {
       [id]: appointment
     };
     return(
-      axios.put(`http://localhost:8001/api/appointments/${id}`,{interview})
+      axios.put(`/api/appointments/${id}`,{interview})
       .then((res)=>{
         setState({
           ...state,
