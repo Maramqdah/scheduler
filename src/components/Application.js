@@ -4,7 +4,7 @@ import "components/DayList";
 import DayList from "components/DayList";
 import Appointment from "./Appointment";
 import axios from "axios";
-import { useEffect,useState } from "react";
+import { useEffect } from "react";
 import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
 import useApplicationData from "hooks/useApplicationData";
 
